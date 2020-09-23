@@ -1,10 +1,10 @@
 package li.cil.oc.common.asm;
 
-import li.cil.oc.api.Network;
 import li.cil.oc.util.SideTracker;
+import li.cil.oc.api.Network;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

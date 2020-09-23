@@ -2,7 +2,7 @@ package li.cil.oc.common.asm.template;
 
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.SimpleComponent;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 /**
  * This interface defines the names to which existing or placeholders for
@@ -22,7 +22,7 @@ public interface SimpleComponentImpl extends Environment, SimpleComponent {
 
     void onChunkUnload_OpenComputers();
 
-    void readFromNBT_OpenComputers(NBTTagCompound nbt);
+    void readFromNBT_OpenComputers(CompoundNBT nbt);
 
-    NBTTagCompound writeToNBT_OpenComputers(NBTTagCompound nbt);
+    CompoundNBT writeToNBT_OpenComputers(CompoundNBT nbt);
 }

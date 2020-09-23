@@ -1,9 +1,10 @@
 package li.cil.oc.api.network;
 
+import li.cil.oc.api.Network;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.Direction;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * This interface is like {@link net.minecraft.inventory.ISidedInventory} is to
@@ -12,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * <p/>
  * This interface is intended to be used on tile entities that are environments.
  * It is used to determine which neighbors a tile entity can connect to when
- * calling {@link li.cil.oc.api.Network#joinOrCreateNetwork(TileEntity)}. It is
+ * calling {@link Network#joinOrCreateNetwork(TileEntity)}. It is
  * used by the keyboard to only interface with the side on which it is attached,
  * as well as the switch to offer a different node for each side.
  */
@@ -20,7 +21,7 @@ public interface SidedEnvironment {
     /**
      * The node this environment uses for the specified side.
      * <p/>
-     * This is the side aware version of the normal {@link li.cil.oc.api.network.Environment#node}
+     * This is the side aware version of the normal {@link Environment#node}
      * method.
      * <p/>
      * The provided side is relative to the environment, i.e. when the tile
@@ -30,9 +31,9 @@ public interface SidedEnvironment {
      *
      * @param side the side to get the node for.
      * @return the node for the specified side.
-     * @see li.cil.oc.api.network.Environment#node
+     * @see Environment#node
      */
-    Node sidedNode(EnumFacing side);
+    Node sidedNode(Direction side);
 
     /**
      * Whether the environment provides a node to connect to on the specified
@@ -50,6 +51,6 @@ public interface SidedEnvironment {
      * @param side the side to check for.
      * @return whether the environment provides a node for the specified side.
      */
-    @SideOnly(Side.CLIENT)
-    boolean canConnect(EnumFacing side);
+    @OnlyIn(Dist.CLIENT)
+    boolean canConnect(Direction side);
 }

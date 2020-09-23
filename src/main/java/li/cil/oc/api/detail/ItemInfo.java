@@ -1,5 +1,6 @@
 package li.cil.oc.api.detail;
 
+import li.cil.oc.api.Items;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,7 +10,7 @@ public interface ItemInfo {
      * The name of this item descriptor.
      * <p/>
      * This is the name that yields this instance when passed to
-     * {@link li.cil.oc.api.Items#get(String)}. Useful for reverse-lookup when
+     * {@link Items#get(String)}. Useful for reverse-lookup when
      * retrieving the descriptor via an item stack.
      *
      * @return the name of this item descriptor.

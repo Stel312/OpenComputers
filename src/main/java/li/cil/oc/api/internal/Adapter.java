@@ -1,5 +1,6 @@
 package li.cil.oc.api.internal;
 
+import li.cil.oc.api.driver.item.HostAware;
 import li.cil.oc.api.network.Environment;
 import net.minecraft.inventory.IInventory;
 
@@ -17,7 +18,7 @@ import net.minecraft.inventory.IInventory;
  *     if (node.host() instanceof Adapter) {
  * </pre>
  * <p/>
- * This can also be used by {@link li.cil.oc.api.driver.item.HostAware} item
+ * This can also be used by {@link HostAware} item
  * drivers to check if the provided environment class is an adapter by checking
  * for assignability, which allows for items that make no sense in adapters to
  * deny being placed into them, for example.

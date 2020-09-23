@@ -1,5 +1,6 @@
 package li.cil.oc.api.machine;
 
+import li.cil.oc.api.internal.Database;
 import net.minecraft.item.ItemStack;
 
 import java.util.Map;
@@ -136,7 +137,7 @@ public interface Arguments extends Iterable<Object> {
      * usually not provide this full information, so the roundtrip callback->
      * script->callback will be incomplete.
      * <p/>
-     * Instead, please make use of the {@link li.cil.oc.api.internal.Database}
+     * Instead, please make use of the {@link Database}
      * component to get complete item stack descriptors.
      *
      * @param index the index from which to get the argument.

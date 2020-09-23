@@ -1,5 +1,7 @@
 package li.cil.oc.api.network;
 
+import li.cil.oc.api.machine.Callback;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * This interface can be used to easily convert tile entities to components,
- * without having to implement {@link li.cil.oc.api.network.Environment}
+ * without having to implement {@link Environment}
  * themselves. The simple implementation will provide no access to OC's internal
  * component network, since you won't have access to the node representing the
  * tile entity. Use this only for simple cases, where you want to expose a
@@ -23,11 +25,11 @@ import java.lang.annotation.Target;
  * interface have to created using a class transformer. If any of the methods
  * already exist, this will fail! If things don't work, check your logs, first.
  * <p/>
- * To expose methods to OC, tag them with {@link li.cil.oc.api.machine.Callback}
+ * To expose methods to OC, tag them with {@link Callback}
  * and have them use the according signature (see the documentation on the
  * <tt>Callback</tt> annotation).
  * <p/>
- * Alternatively, implement {@link li.cil.oc.api.network.ManagedPeripheral} in
+ * Alternatively, implement {@link ManagedPeripheral} in
  * addition to this interface, to make methods available ComputerCraft style.
  * <p/>
  * So, in short:

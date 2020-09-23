@@ -1,14 +1,15 @@
 package li.cil.oc.api;
 
+import li.cil.oc.api.network.Environment;
+import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.driver.Converter;
 import li.cil.oc.api.driver.EnvironmentProvider;
 import li.cil.oc.api.driver.InventoryProvider;
 import li.cil.oc.api.driver.DriverItem;
 import li.cil.oc.api.driver.DriverBlock;
-import li.cil.oc.api.network.EnvironmentHost;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -22,11 +23,11 @@ import java.util.Set;
  * Drivers are used to make items and third-party blocks available in the mod's
  * component network, and optionally to user programs. If you implement a new
  * block that should interact with the mod's component network it is enough to
- * have it implement {@link li.cil.oc.api.network.Environment} - no driver is
+ * have it implement {@link Environment} - no driver is
  * needed in that case.
  * <p/>
  * Note that these methods should <em>not</em> be called in the pre-init phase,
- * since the {@link li.cil.oc.api.API#driver} may not have been initialized
+ * since the {@link API#driver} may not have been initialized
  * at that time. Only start calling these methods in the init phase or later.
  *
  * @see Network
@@ -124,7 +125,7 @@ public final class Driver {
      * @param pos   the position of the block.
      * @return a driver for the block, or <tt>null</tt> if there is none.
      */
-    public static DriverBlock driverFor(World world, BlockPos pos, EnumFacing side) {
+    public static DriverBlock driverFor(World world, BlockPos pos, Direction side) {
         if (API.driver != null)
             return API.driver.driverFor(world, pos, side);
         return null;
@@ -214,7 +215,7 @@ public final class Driver {
      * @param player the player holding the item. May be <tt>null</tt>.
      * @return the IItemHandler implementation interfacing the stack, or <tt>null</tt>.
      */
-    public static IItemHandler itemHandlerFor(ItemStack stack, EntityPlayer player) {
+    public static IItemHandler itemHandlerFor(ItemStack stack, PlayerEntity player) {
         if (API.driver != null)
             return API.driver.itemHandlerFor(stack, player);
         return null;

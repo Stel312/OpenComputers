@@ -1,7 +1,7 @@
 package li.cil.oc.api.driver.item;
 
-import li.cil.oc.api.driver.DriverItem;
 import li.cil.oc.api.machine.Architecture;
+import li.cil.oc.api.driver.DriverItem;
 import net.minecraft.item.ItemStack;
 
 /**

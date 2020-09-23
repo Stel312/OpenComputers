@@ -1,8 +1,10 @@
 package li.cil.oc.api.network;
 
+import li.cil.oc.api.machine.Callback;
+
 /**
  * This interface can be added to {@link Environment}s with a number of
- * {@link li.cil.oc.api.machine.Callback}s on them, to select which of these
+ * {@link Callback}s on them, to select which of these
  * callbacks should be exposed to machines dynamically.
  * <p/>
  * <em>Important:</em> while this allows dynamic selection of callbacks, if

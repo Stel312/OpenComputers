@@ -1,9 +1,9 @@
 package li.cil.oc.api.network;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 /**
- * This is an extended version of {@link li.cil.oc.api.network.SimpleComponent}
+ * This is an extended version of {@link SimpleComponent}
  * which allows controlling connectivity on a side-by-side basis.
  * <p/>
  * Like the <tt>SimpleComponent</tt> interface, this is intended to be used
@@ -22,5 +22,5 @@ public interface SidedComponent {
      * @param side the side to check for.
      * @return whether the component may be connected to from the specified side.
      */
-    boolean canConnectNode(EnumFacing side);
+    boolean canConnectNode(Direction side);
 }

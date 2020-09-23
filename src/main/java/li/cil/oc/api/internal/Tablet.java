@@ -1,8 +1,9 @@
 package li.cil.oc.api.internal;
 
+import li.cil.oc.api.driver.item.HostAware;
 import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.machine.MachineHost;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * This interface is implemented as a marker by tablets.
@@ -15,7 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
  *     if (node.host() instanceof Tablet) {
  * </pre>
  * <p/>
- * This can also be used by {@link li.cil.oc.api.driver.item.HostAware} item
+ * This can also be used by {@link HostAware} item
  * drivers to check if the provided environment class is a tablet by checking
  * for assignability, which allows for items that make no sense in tablets to
  * deny being placed into them in the assembler, for example.
@@ -34,5 +35,5 @@ public interface Tablet extends EnvironmentHost, MachineHost, Rotatable {
      *
      * @return the player last holding the tablet.
      */
-    EntityPlayer player();
+    PlayerEntity player();
 }

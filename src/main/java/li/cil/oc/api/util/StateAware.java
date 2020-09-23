@@ -1,5 +1,7 @@
 package li.cil.oc.api.util;
 
+import li.cil.oc.api.component.RackMountable;
+
 import java.util.EnumSet;
 
 /**
@@ -7,7 +9,7 @@ import java.util.EnumSet;
  * <p/>
  * This is similar to BuildCraft's <tt>IHasWork</tt> interface.
  * <p/>
- * This can also be implemented on {@link li.cil.oc.api.component.RackMountable}s
+ * This can also be implemented on {@link RackMountable}s
  * to indicate a working state, which is used when checking for redstone cards
  * in them, for example (only active mountables will be used).
  */

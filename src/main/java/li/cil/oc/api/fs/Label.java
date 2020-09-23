@@ -1,11 +1,12 @@
 package li.cil.oc.api.fs;
 
+import li.cil.oc.api.FileSystem;
 import li.cil.oc.api.Persistable;
 
 /**
  * Used by file system components to get and set the file system's label.
  *
- * @see li.cil.oc.api.FileSystem#asManagedEnvironment
+ * @see FileSystem#asManagedEnvironment
  */
 public interface Label extends Persistable {
     /**

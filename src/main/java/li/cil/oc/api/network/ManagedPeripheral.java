@@ -1,14 +1,15 @@
 package li.cil.oc.api.network;
 
 import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 
 /**
- * This interface can be used with an {@link li.cil.oc.api.network.Environment}
+ * This interface can be used with an {@link Environment}
  * and is intended to be used for environments wrapping a ComputerCraft
  * peripheral. It could be used for other purposes as well, though. It allows
  * providing method names in addition to those defined via the
- * {@link li.cil.oc.api.machine.Callback} annotation, and invoking said methods.
+ * {@link Callback} annotation, and invoking said methods.
  */
 public interface ManagedPeripheral {
     /**

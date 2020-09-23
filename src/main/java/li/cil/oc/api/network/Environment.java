@@ -1,5 +1,7 @@
 package li.cil.oc.api.network;
 
+import li.cil.oc.api.machine.Callback;
+
 /**
  * The environment of a node.
  * <p/>
@@ -44,7 +46,7 @@ package li.cil.oc.api.network;
  * <li>Make the environment's {@link #node} a {@link Component} and ensure
  * its {@link Component#visibility} is set to a value where it can
  * be seen by computers in the network.</li>
- * <li>Annotate methods in the environment as {@link li.cil.oc.api.machine.Callback}s.</li>
+ * <li>Annotate methods in the environment as {@link Callback}s.</li>
  * </ol>
  */
 public interface Environment {

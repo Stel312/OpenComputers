@@ -2,9 +2,9 @@ package li.cil.oc.api.internal;
 
 import li.cil.oc.api.Persistable;
 import li.cil.oc.api.network.ManagedEnvironment;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * This interface implements functionality for displaying and manipulating
@@ -446,7 +446,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * @return <tt>true</tt> if the displayed content changed since the last
      * call to this method.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     boolean renderText();
 
     /**
@@ -458,7 +458,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      *
      * @return the total width of the rendered buffer, in pixels.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     int renderWidth();
 
     /**
@@ -470,7 +470,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      *
      * @return the total height of the rendered buffer, in pixels.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     int renderHeight();
 
     /**
@@ -481,7 +481,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      *
      * @param enabled whether the text buffer should be rendered.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     void setRenderingEnabled(boolean enabled);
 
     /**
@@ -489,7 +489,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      *
      * @see #setRenderingEnabled(boolean)
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     boolean isRenderingEnabled();
 
     // ----------------------------------------------------------------------- //
@@ -505,7 +505,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * @param code      the key code of the pressed key.
      * @param player    the player that pressed the key. Pass <tt>null</tt> on the client side.
      */
-    void keyDown(char character, int code, EntityPlayer player);
+    void keyDown(char character, int code, PlayerEntity player);
 
     /**
      * Signals a key up event for the buffer.
@@ -518,7 +518,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * @param code      the key code of the released key.
      * @param player    the player that released the key. Pass <tt>null</tt> on the client side.
      */
-    void keyUp(char character, int code, EntityPlayer player);
+    void keyUp(char character, int code, PlayerEntity player);
 
     /**
      * Signals a clipboard paste event for the buffer.
@@ -530,7 +530,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * @param value  the text that was pasted.
      * @param player the player that pasted the text. Pass <tt>null</tt> on the client side.
      */
-    void clipboard(String value, EntityPlayer player);
+    void clipboard(String value, PlayerEntity player);
 
     /**
      * Signals a mouse button down event for the buffer.
@@ -543,7 +543,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * @param button the button of the mouse that was pressed.
      * @param player the player that pressed the mouse button. Pass <tt>null</tt> on the client side.
      */
-    void mouseDown(double x, double y, int button, EntityPlayer player);
+    void mouseDown(double x, double y, int button, PlayerEntity player);
 
     /**
      * Signals a mouse drag event for the buffer.
@@ -556,7 +556,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * @param button the button of the mouse that is pressed.
      * @param player the player that moved the mouse. Pass <tt>null</tt> on the client side.
      */
-    void mouseDrag(double x, double y, int button, EntityPlayer player);
+    void mouseDrag(double x, double y, int button, PlayerEntity player);
 
     /**
      * Signals a mouse button release event for the buffer.
@@ -569,7 +569,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * @param button the button of the mouse that was released.
      * @param player the player that released the mouse button. Pass <tt>null</tt> on the client side.
      */
-    void mouseUp(double x, double y, int button, EntityPlayer player);
+    void mouseUp(double x, double y, int button, PlayerEntity player);
 
     /**
      * Signals a mouse wheel scroll event for the buffer.
@@ -582,7 +582,7 @@ public interface TextBuffer extends ManagedEnvironment, Persistable {
      * @param delta  indicates the direction of the mouse scroll.
      * @param player the player that scrolled the mouse wheel. Pass <tt>null</tt> on the client side.
      */
-    void mouseScroll(double x, double y, int delta, EntityPlayer player);
+    void mouseScroll(double x, double y, int delta, PlayerEntity player);
 
     // ----------------------------------------------------------------------- //
 

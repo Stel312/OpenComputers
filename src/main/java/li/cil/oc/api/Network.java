@@ -1,15 +1,17 @@
 package li.cil.oc.api;
 
 import li.cil.oc.api.detail.Builder;
+import com.webmilio.opencompooter.api.network.*;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Packet;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.api.network.WirelessEndpoint;
-import net.minecraft.nbt.NBTTagCompound;
+import li.cil.oc.api.network.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 
 /**
  * This class provides factories for networks and nodes.
@@ -26,18 +28,18 @@ import net.minecraft.world.IBlockAccess;
  * logic lies - since user code only runs on the server.
  * <p/>
  * Note that these methods should <em>not</em> be called in the pre-init phase,
- * since the {@link li.cil.oc.api.API#network} may not have been initialized
+ * since the {@link API#network} may not have been initialized
  * at that time. Only start calling these methods in the init phase or later.
  */
 public final class Network {
     /**
-     * Convenience overload for {@link #joinOrCreateNetwork(IBlockAccess, BlockPos)}.
+     * Convenience overload for {@link #joinOrCreateNetwork(net.minecraft.world.IWorld, BlockPos)}.
      * <p/>
      * If the tile entity implements {@link Environment} its one node will be
      * connected to any existing adjacent tile entity nodes. If none exist a
      * new network with the specified tile entity's node as its sole entry.
      * <p/>
-     * If the tile entity is a {@link li.cil.oc.api.network.SidedEnvironment}
+     * If the tile entity is a {@link SidedEnvironment}
      * the same rules as for simple environments apply, except that the
      * respective for each side is used when connecting, and each side's node
      * is added to its own new network, if necessary.
@@ -56,7 +58,7 @@ public final class Network {
      * @param world the world containing the location to connect.
      * @param pos   the position at which to update the network.
      */
-    public static void joinOrCreateNetwork(final IBlockAccess world, final BlockPos pos) {
+    public static void joinOrCreateNetwork(final IWorld world, final BlockPos pos) {
         if (API.network != null)
             API.network.joinOrCreateNetwork(world, pos);
     }
@@ -233,7 +235,7 @@ public final class Network {
      * @param nbt the tag to load the packet from.
      * @return the loaded packet.
      */
-    public static Packet newPacket(final NBTTagCompound nbt) {
+    public static Packet newPacket(final CompoundNBT nbt) {
         if (API.network != null)
             return API.network.newPacket(nbt);
         return null;

@@ -1,7 +1,7 @@
 package li.cil.oc.api.detail;
 
-import li.cil.oc.api.FileSystem;
-import net.minecraft.item.EnumDyeColor;
+import li.cil.oc.api.fs.FileSystem;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -45,7 +45,7 @@ public interface ItemAPI {
      * to select the corresponding factory method, so choose wisely.
      * <p/>
      * To use some directory in your mod JAR as the directory provided by the
-     * loot disk, use {@link FileSystem#fromClass} in your callable.
+     * loot disk, use {@link li.cil.oc.api.FileSystem#fromClass} in your callable.
      * <p/>
      * If <tt>doRecipeCycling</tt> is <tt>true</tt>, the floppy disk will be
      * included in the floppy disk recipe cycle if that is enabled.
@@ -59,7 +59,7 @@ public interface ItemAPI {
      * @return an item stack representing the registered loot disk, to allow
      * adding a recipe for your loot disk, for example.
      */
-    ItemStack registerFloppy(String name, EnumDyeColor color, Callable<li.cil.oc.api.fs.FileSystem> factory, boolean doRecipeCycling);
+    ItemStack registerFloppy(String name, DyeColor color, Callable<FileSystem> factory, boolean doRecipeCycling);
 
     /**
      * Register a single custom EEPROM.

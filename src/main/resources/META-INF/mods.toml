@@ -1,0 +1,22 @@
+modLoader="javafml"
+loaderVersion="[32,33)"
+
+logoFile="pack.png"
+
+credits="Many people"
+authors="Sangar, Vexatos, payonel, magik6k, Lord Joda, Webmilio, Github Contributors"
+
+[[mods]]
+modId="opencomputers"
+version="${version}"
+displayName="OpenComputers"
+description='''
+This mod adds modular computers and robots that can be programmed in Lua.
+'''
+
+[[dependencies.opencomputers]]
+    modId="forge"
+    mandatory=true
+    versionRange="[32.0.108,33)"
+    ordering="NONE"
+    side="BOTH"

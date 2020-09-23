@@ -1,13 +1,17 @@
 package li.cil.oc.api.driver;
 
+import li.cil.oc.api.Machine;
+import li.cil.oc.api.machine.MachineHost;
+import li.cil.oc.api.network.Environment;
+
 import java.util.Map;
 
 /**
- * Implement this on {@link li.cil.oc.api.network.Environment}s if you wish to
+ * Implement this on {@link Environment}s if you wish to
  * expose some (typically static) information about the device represented by
- * that environment to a {@link li.cil.oc.api.Machine} connected to it.
+ * that environment to a {@link Machine} connected to it.
  * <p/>
- * You may also implement this on a {@link li.cil.oc.api.machine.MachineHost}
+ * You may also implement this on a {@link MachineHost}
  * in which case the <code>Machine</code> will forward that information as
  * its own (since <code>MachineHost</code>s usually use the machine's node as
  * their own, this avoids a dummy environment used solely for device info).

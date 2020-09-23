@@ -1,5 +1,7 @@
 package li.cil.oc.api.nanomachines;
 
+import li.cil.oc.api.Nanomachines;
+
 /**
  * The nanomachine controller is responsible for keeping track of the current
  * layout of neural connections (i.e. how nanomachine "inputs" connect to
@@ -16,7 +18,7 @@ package li.cil.oc.api.nanomachines;
  * allow for some optimization by re-rolling the connections.
  * <p/>
  * This interface is not meant to be implemented externally. To get a reference
- * to a controller, use {@link li.cil.oc.api.Nanomachines#getController}.
+ * to a controller, use {@link Nanomachines#getController}.
  */
 public interface Controller {
     /**

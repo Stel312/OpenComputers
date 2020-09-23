@@ -6,17 +6,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.inventory.container.PlayerContainer;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Fired to allow rendering a custom overlay for {@link li.cil.oc.api.component.RackMountable}s.
+ * Fired to allow rendering a custom overlay for {@link RackMountable}s.
  * </p>
  * When this event is fired, the GL state is set up such that the origin is
  * the top left corner of the mountable the event was fired for. It's the
@@ -39,9 +39,9 @@ public abstract class RackMountableRenderEvent extends Event {
      *
      * @see RackMountable#getData()
      */
-    public final NBTTagCompound data;
+    public final CompoundNBT data;
 
-    public RackMountableRenderEvent(Rack rack, int mountable, NBTTagCompound data) {
+    public RackMountableRenderEvent(Rack rack, int mountable, CompoundNBT data) {
         this.rack = rack;
         this.mountable = mountable;
         this.data = data;
@@ -62,14 +62,14 @@ public abstract class RackMountableRenderEvent extends Event {
         /**
          * The front-facing side, i.e. where the mountable is visible on the rack.
          */
-        public final EnumFacing side;
+        public final Direction side;
 
         /**
          * Texture to use for the front of the mountable.
          */
         private TextureAtlasSprite frontTextureOverride;
 
-        public Block(final Rack rack, final int mountable, final NBTTagCompound data, final EnumFacing side) {
+        public Block(final Rack rack, final int mountable, final CompoundNBT data, final Direction side) {
             super(rack, mountable, data);
             this.side = side;
         }
@@ -114,7 +114,7 @@ public abstract class RackMountableRenderEvent extends Event {
          */
         public final float v0, v1;
 
-        public TileEntity(final Rack rack, final int mountable, final NBTTagCompound data, final float v0, final float v1) {
+        public TileEntity(final Rack rack, final int mountable, final CompoundNBT data, final float v0, final float v1) {
             super(rack, mountable, data);
             this.v0 = v0;
             this.v1 = v1;
@@ -138,7 +138,7 @@ public abstract class RackMountableRenderEvent extends Event {
          * @param u1      the upper end of the vertical area to render at.
          */
         public void renderOverlay(final ResourceLocation texture, final float u0, final float u1) {
-            Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+            Minecraft.getInstance().getTextureManager().bindTexture(texture);
             final Tessellator t = Tessellator.getInstance();
             final BufferBuilder r = t.getBuffer();
             r.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
@@ -167,8 +167,9 @@ public abstract class RackMountableRenderEvent extends Event {
          * @param u1      the upper end of the vertical area to render at.
          */
         public void renderOverlayFromAtlas(final ResourceLocation texture, final float u0, final float u1) {
-            Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            final TextureAtlasSprite icon = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
+            Minecraft.getInstance().getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
+            final TextureAtlasSprite icon = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(texture);
+
             final Tessellator t = Tessellator.getInstance();
             final BufferBuilder r = t.getBuffer();
             r.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

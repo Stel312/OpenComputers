@@ -1,8 +1,10 @@
 package li.cil.oc.api.driver;
 
+import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.ManagedEnvironment;
+import li.cil.oc.api.network.SidedEnvironment;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 /**
@@ -11,8 +13,8 @@ import net.minecraft.world.World;
  * This driver type is used for components that are blocks, i.e. that can be
  * placed in the world, but cannot be modified to or don't want to have their
  * {@link net.minecraft.tileentity.TileEntity} implement one of the interfaces
- * for environments ({@link li.cil.oc.api.network.Environment} or
- * {@link li.cil.oc.api.network.SidedEnvironment}).
+ * for environments ({@link Environment} or
+ * {@link SidedEnvironment}).
  * <p/>
  * A block driver is used by <tt>Adapter</tt> blocks to check its neighbors and
  * whether those neighbors should be treated as components or not. If a driver
@@ -44,7 +46,7 @@ public interface DriverBlock {
      * @param side  the side of the block to check.
      * @return <tt>true</tt> if the block is supported; <tt>false</tt> otherwise.
      */
-    boolean worksWith(World world, BlockPos pos, EnumFacing side);
+    boolean worksWith(World world, BlockPos pos, Direction side);
 
     /**
      * Create a new managed environment interfacing the specified block.
@@ -67,5 +69,5 @@ public interface DriverBlock {
      * @param side  the side of the block to check.
      * @return the environment for the block at that location.
      */
-    ManagedEnvironment createEnvironment(World world, BlockPos pos, EnumFacing side);
+    ManagedEnvironment createEnvironment(World world, BlockPos pos, Direction side);
 }

@@ -1,10 +1,12 @@
 package li.cil.oc.api;
 
+import li.cil.oc.api.internal.Tablet;
+import li.cil.oc.api.machine.Architecture;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
+import net.minecraftforge.fml.InterModComms;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
@@ -53,7 +55,7 @@ public final class IMC {
      * @param callback the callback to register as a filtering method.
      */
     public static void registerAssemblerFilter(final String callback) {
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_ASSEMBLER_FILTER, callback);
+        InterModComms.sendTo(MOD_ID, REGISTER_ASSEMBLER_FILTER, () -> callback);
     }
 
     /**
@@ -114,59 +116,62 @@ public final class IMC {
      *                       for the third component slot. Up to nine.
      */
     public static void registerAssemblerTemplate(final String name, final String select, final String validate, final String assemble, final Class host, final int[] containerTiers, final int[] upgradeTiers, final Iterable<Pair<String, Integer>> componentSlots) {
-        final NBTTagCompound nbt = new NBTTagCompound();
+        final CompoundNBT nbt = new CompoundNBT();
         if (name != null) {
-            nbt.setString("name", name);
-        }
-        nbt.setString("select", select);
-        nbt.setString("validate", validate);
-        nbt.setString("assemble", assemble);
-        if (host != null) {
-            nbt.setString("hostClass", host.getName());
+            nbt.putString("name", name);
         }
 
-        final NBTTagList containersNbt = new NBTTagList();
+        nbt.putString("select", select);
+        nbt.putString("validate", validate);
+        nbt.putString("assemble", assemble);
+
+        if (host != null) {
+            nbt.putString("hostClass", host.getName());
+        }
+
+        final ListNBT containersNbt = new ListNBT();
+
         if (containerTiers != null) {
             for (int tier : containerTiers) {
-                final NBTTagCompound slotNbt = new NBTTagCompound();
-                slotNbt.setInteger("tier", tier);
-                containersNbt.appendTag(slotNbt);
+                final CompoundNBT slotNbt = new CompoundNBT();
+                slotNbt.putInt("tier", tier);
+                containersNbt.add(slotNbt);
             }
         }
-        if (containersNbt.tagCount() > 0) {
-            nbt.setTag("containerSlots", containersNbt);
+        if (containersNbt.size() > 0) {
+            nbt.put("containerSlots", containersNbt);
         }
 
-        final NBTTagList upgradesNbt = new NBTTagList();
+        final ListNBT upgradesNbt = new ListNBT();
         if (upgradeTiers != null) {
             for (int tier : upgradeTiers) {
-                final NBTTagCompound slotNbt = new NBTTagCompound();
-                slotNbt.setInteger("tier", tier);
-                upgradesNbt.appendTag(slotNbt);
+                final CompoundNBT slotNbt = new CompoundNBT();
+                slotNbt.putInt("tier", tier);
+                upgradesNbt.add(slotNbt);
             }
         }
-        if (upgradesNbt.tagCount() > 0) {
-            nbt.setTag("upgradeSlots", upgradesNbt);
+        if (upgradesNbt.size() > 0) {
+            nbt.put("upgradeSlots", upgradesNbt);
         }
 
-        final NBTTagList componentsNbt = new NBTTagList();
+        final ListNBT componentsNbt = new ListNBT();
         if (componentSlots != null) {
             for (Pair<String, Integer> slot : componentSlots) {
                 if (slot == null) {
-                    componentsNbt.appendTag(new NBTTagCompound());
+                    componentsNbt.add(new CompoundNBT());
                 } else {
-                    final NBTTagCompound slotNbt = new NBTTagCompound();
-                    slotNbt.setString("type", slot.getLeft());
-                    slotNbt.setInteger("tier", slot.getRight());
-                    componentsNbt.appendTag(slotNbt);
+                    final CompoundNBT slotNbt = new CompoundNBT();
+                    slotNbt.putString("type", slot.getLeft());
+                    slotNbt.putInt("tier", slot.getRight());
+                    componentsNbt.add(slotNbt);
                 }
             }
         }
-        if (componentsNbt.tagCount() > 0) {
-            nbt.setTag("componentSlots", componentsNbt);
+        if (componentsNbt.size() > 0) {
+            nbt.put("componentSlots", componentsNbt);
         }
 
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_ASSEMBLER_TEMPLATE, nbt);
+        InterModComms.sendTo(MOD_ID, REGISTER_ASSEMBLER_TEMPLATE, () -> nbt);
     }
 
     /**
@@ -203,14 +208,15 @@ public final class IMC {
      *                    ingredients from an item.
      */
     public static void registerDisassemblerTemplate(final String name, final String select, final String disassemble) {
-        final NBTTagCompound nbt = new NBTTagCompound();
+        final CompoundNBT nbt = new CompoundNBT();
         if (name != null) {
-            nbt.setString("name", name);
+            nbt.putString("name", name);
         }
-        nbt.setString("select", select);
-        nbt.setString("disassemble", disassemble);
 
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_DISASSEMBLER_TEMPLATE, nbt);
+        nbt.putString("select", select);
+        nbt.putString("disassemble", disassemble);
+
+        InterModComms.sendTo(MOD_ID, REGISTER_ASSEMBLER_TEMPLATE, () -> nbt);
     }
 
     /**
@@ -234,7 +240,7 @@ public final class IMC {
      * @param callback the callback to register as a durability provider.
      */
     public static void registerToolDurabilityProvider(final String callback) {
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_TOOL_DURABILITY_PROVIDER, callback);
+        InterModComms.sendTo(MOD_ID, REGISTER_TOOL_DURABILITY_PROVIDER, () -> callback);
     }
 
     /**
@@ -258,7 +264,7 @@ public final class IMC {
      * @param callback the callback to register as a wrench tool handler.
      */
     public static void registerWrenchTool(final String callback) {
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_WRENCH_TOOL, callback);
+        InterModComms.sendTo(MOD_ID, REGISTER_WRENCH_TOOL, () -> callback);
     }
 
     /**
@@ -281,7 +287,7 @@ public final class IMC {
      * @param callback the callback to register as a wrench tool tester.
      */
     public static void registerWrenchToolCheck(final String callback) {
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_WRENCH_TOOL_CHECK, callback);
+        InterModComms.sendTo(MOD_ID, REGISTER_WRENCH_TOOL_CHECK, () -> callback);
     }
 
     /**
@@ -307,11 +313,11 @@ public final class IMC {
      * @param charge    the callback to register for charging items.
      */
     public static void registerItemCharge(final String name, final String canCharge, final String charge) {
-        final NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("name", name);
-        nbt.setString("canCharge", canCharge);
-        nbt.setString("charge", charge);
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_ITEM_CHARGE, nbt);
+        final CompoundNBT nbt = new CompoundNBT();
+        nbt.putString("name", name);
+        nbt.putString("canCharge", canCharge);
+        nbt.putString("charge", charge);
+        InterModComms.sendTo(MOD_ID, REGISTER_ITEM_CHARGE, () -> nbt);
     }
 
     /**
@@ -335,7 +341,7 @@ public final class IMC {
      * @param callback the callback to register as an ink provider.
      */
     public static void registerInkProvider(final String callback) {
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_INK_PROVIDER, callback);
+        InterModComms.sendTo(MOD_ID, REGISTER_INK_PROVIDER, () -> callback);
     }
 
     /**
@@ -348,7 +354,7 @@ public final class IMC {
      * @param peripheral the class of the peripheral to blacklist.
      */
     public static void blacklistPeripheral(final Class peripheral) {
-        FMLInterModComms.sendMessage(MOD_ID, BLACKLIST_PERIPHERAL, peripheral.getName());
+        InterModComms.sendTo(MOD_ID, BLACKLIST_PERIPHERAL, () -> peripheral.getName());
     }
 
     /**
@@ -360,20 +366,23 @@ public final class IMC {
      * installed in those devices, such as graphics cards in micro-controllers.
      * <p/>
      * The host class is the class of the environment the component would be
-     * installed in, e.g. {@link li.cil.oc.api.internal.Tablet}.
+     * installed in, e.g. {@link Tablet}.
      *
      * @param name  the name of the component being blacklisted.
      * @param host  the class of the host to blacklist the component for.
      * @param stack the item stack representing the blacklisted component.
      */
     public static void blacklistHost(final String name, final Class host, final ItemStack stack) {
-        final NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("name", name);
-        nbt.setString("host", host.getName());
-        final NBTTagCompound stackNbt = new NBTTagCompound();
-        stack.writeToNBT(stackNbt);
-        nbt.setTag("item", stackNbt);
-        FMLInterModComms.sendMessage(MOD_ID, BLACKLIST_HOST, nbt);
+        final CompoundNBT nbt = new CompoundNBT();
+        nbt.putString("name", name);
+        nbt.putString("host", host.getName());
+
+        final CompoundNBT stackNbt = new CompoundNBT();
+
+        stack.write(stackNbt);
+        nbt.put("item", stackNbt);
+
+        InterModComms.sendTo(MOD_ID, BLACKLIST_HOST, () -> nbt);
     }
 
     /**
@@ -390,7 +399,7 @@ public final class IMC {
      * will be made available to all architectures. It allows filtering since
      * typically programs will be written for one specific architecture type, e.g.
      * Lua programs will not (directly) work on a MIPS architecture. The name
-     * specified is the in the {@link li.cil.oc.api.machine.Architecture.Name}
+     * specified is the in the {@link Architecture.Name}
      * annotation of the architecture (also shown in the CPU tooltip).
      * <p/>
      * The architecture names for Lua are <code>Lua 5.2</code>, <code>Lua 5.3</code>
@@ -401,17 +410,21 @@ public final class IMC {
      * @param architectures the names of the architectures this entry applies to.
      */
     public static void registerProgramDiskLabel(final String programName, final String diskLabel, final String... architectures) {
-        final NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("program", programName);
-        nbt.setString("label", diskLabel);
+        final CompoundNBT nbt = new CompoundNBT();
+
+        nbt.putString("program", programName);
+        nbt.putString("label", diskLabel);
+
         if (architectures != null && architectures.length > 0) {
-            final NBTTagList architecturesNbt = new NBTTagList();
+            final ListNBT architecturesNbt = new ListNBT();
+
             for (final String architecture : architectures) {
-                architecturesNbt.appendTag(new NBTTagString(architecture));
+                architecturesNbt.add(StringNBT.valueOf(architecture));
             }
-            nbt.setTag("architectures", architecturesNbt);
+            nbt.put("architectures", architecturesNbt);
         }
-        FMLInterModComms.sendMessage(MOD_ID, REGISTER_PROGRAM_DISK_LABEL, nbt);
+
+        InterModComms.sendTo(MOD_ID, REGISTER_PROGRAM_DISK_LABEL, () -> nbt);
     }
 
     // ----------------------------------------------------------------------- //

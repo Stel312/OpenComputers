@@ -1,19 +1,24 @@
 package li.cil.oc.api.prefab;
 
+import li.cil.oc.api.machine.Callback;
+import com.webmilio.opencompooter.api.network.*;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.SidedEnvironment;
-import net.minecraft.nbt.NBTTagCompound;
+import li.cil.oc.api.network.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.texture.ITickable;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
 
 /**
- * TileEntities can implement the {@link li.cil.oc.api.network.SidedEnvironment}
+ * TileEntities can implement the {@link SidedEnvironment}
  * interface to allow them to interact with the component network, by providing
- * a separate {@link li.cil.oc.api.network.Node} for each block face, and
+ * a separate {@link Node} for each block face, and
  * connecting it to said network. This allows more control over connectivity
- * than the simple {@link li.cil.oc.api.network.Environment}.
+ * than the simple {@link Environment}.
  * <p/>
  * Nodes in such a network can communicate with each other, or just use the
  * network as an index structure to find other nodes connected to them.
@@ -26,18 +31,24 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
     // See updateEntity().
     protected boolean addedToNetwork = false;
 
+    public TileEntitySidedEnvironment(TileEntityType<?> tileEntityTypeIn, final Node... nodes) {
+        super(tileEntityTypeIn);
+
+        System.arraycopy(nodes, 0, this.nodes, 0, Math.min(nodes.length, this.nodes.length));
+    }
+
     /**
      * This expects a node per face that is used to represent this tile entity.
      * <p/>
      * You must only create new nodes using the factory method in the network
-     * API, {@link li.cil.oc.api.Network#newNode(li.cil.oc.api.network.Environment, li.cil.oc.api.network.Visibility)}.
+     * API, {@link Network#newNode(Environment, Visibility)}.
      * <p/>
      * For example:
      * <pre>
      * // The first parameters to newNode is the host() of the node, which will
      * // usually be this tile entity. The second one is it's reachability,
      * // which determines how other nodes in the same network can query this
-     * // node. See {@link li.cil.oc.api.network.Network#nodes(li.cil.oc.api.network.Node)}.
+     * // node. See {@link li.cil.oc.api.network.Network#nodes(Node)}.
      * super(Network.newNode(???, Visibility.Network)
      *       // This call allows the node to consume energy from the
      *       // component network it is in and act as a consumer, or to
@@ -45,7 +56,7 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
      *       // If you do not need energy remove this call.
      *       .withConnector()
      *       // This call marks the tile entity as a component. This means you
-     *       // can mark methods in it using the {@link li.cil.oc.api.machine.Callback}
+     *       // can mark methods in it using the {@link Callback}
      *       // annotation, making them callable from user code. The first
      *       // parameter is the name by which the component will be known in
      *       // the computer, in this case it could be accessed as
@@ -60,9 +71,11 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
      *       .create(), ...);
      * </pre>
      */
-    protected TileEntitySidedEnvironment(final Node... nodes) {
+    /*protected TileEntitySidedEnvironment(final Node... nodes) {
+        super();
+
         System.arraycopy(nodes, 0, this.nodes, 0, Math.min(nodes.length, this.nodes.length));
-    }
+    }*/
 
     // ----------------------------------------------------------------------- //
 
@@ -72,14 +85,15 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
     // exists for a side won't work on the client.
 
     @Override
-    public Node sidedNode(final EnumFacing side) {
+    public Node sidedNode(final Direction side) {
         return nodes[side.ordinal()];
     }
 
     // ----------------------------------------------------------------------- //
 
+
     @Override
-    public void update() {
+    public void tick() {
         // On the first update, try to add our node to nearby networks. We do
         // this in the update logic, not in validate() because we need to access
         // neighboring tile entities, which isn't possible in validate().
@@ -94,8 +108,8 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
     }
 
     @Override
-    public void onChunkUnload() {
-        super.onChunkUnload();
+    public void onChunkUnloaded() {
+        super.onChunkUnloaded();
         // Make sure to remove the node from its network when its environment,
         // meaning this tile entity, gets unloaded.
         for (Node node : nodes) {
@@ -104,8 +118,8 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
+    public void invalidateCaps() {
+        super.invalidateCaps();
         // Make sure to remove the node from its network when its environment,
         // meaning this tile entity, gets unloaded.
         for (Node node : nodes) {
@@ -115,9 +129,11 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
 
     // ----------------------------------------------------------------------- //
 
+
     @Override
-    public void readFromNBT(final NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
+    public void read(BlockState state, CompoundNBT nbt) {
+        super.read(state, nbt);
+
         int index = 0;
         for (Node node : nodes) {
             // The host check may be superfluous for you. It's just there to allow
@@ -129,25 +145,30 @@ public abstract class TileEntitySidedEnvironment extends TileEntity implements S
                 // to continue working without interruption across loads. If the
                 // node is a power connector this is also required to restore the
                 // internal energy buffer of the node.
-                node.load(nbt.getCompoundTag("oc:node" + index));
+                node.load(nbt.getCompound("oc:node" + index));
             }
             ++index;
         }
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
+    public CompoundNBT write(CompoundNBT compound) {
+        super.write(compound);
+
         int index = 0;
+
         for (Node node : nodes) {
             // See readFromNBT() regarding host check.
             if (node != null && node.host() == this) {
-                final NBTTagCompound nodeNbt = new NBTTagCompound();
+                final CompoundNBT nodeNbt = new CompoundNBT();
                 node.save(nodeNbt);
-                nbt.setTag("oc:node" + index, nodeNbt);
+
+                compound.put("oc:node" + index, nodeNbt);
             }
+
             ++index;
         }
-        return nbt;
+
+        return compound;
     }
 }

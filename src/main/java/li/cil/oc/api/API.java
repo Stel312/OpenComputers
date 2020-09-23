@@ -1,6 +1,5 @@
 package li.cil.oc.api;
 
-import com.typesafe.config.Config;
 import li.cil.oc.api.detail.DriverAPI;
 import li.cil.oc.api.detail.FileSystemAPI;
 import li.cil.oc.api.detail.ItemAPI;
@@ -25,7 +24,6 @@ public class API {
     /**
      * The loaded config.
      */
-    public static Config config = null;
 
     /**
      * Whether OpenComputers uses power.

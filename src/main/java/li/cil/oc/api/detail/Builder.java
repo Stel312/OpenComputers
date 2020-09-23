@@ -1,5 +1,7 @@
 package li.cil.oc.api.detail;
 
+import li.cil.oc.api.Network;
+import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.network.Component;
 import li.cil.oc.api.network.ComponentConnector;
 import li.cil.oc.api.network.Connector;
@@ -7,7 +9,7 @@ import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
 
 /**
- * Used for building {@link Node}s via {@link li.cil.oc.api.Network#newNode}.
+ * Used for building {@link Node}s via {@link Network#newNode}.
  *
  * @param <T> the type of the node created by this builder.
  */
@@ -31,13 +33,13 @@ public interface Builder<T extends Node> {
          * Makes the node a component.
          * <p/>
          * Nodes that are components can be accessed from computers, methods
-         * declared in them marked using the {@link li.cil.oc.api.machine.Callback} annotation can
+         * declared in them marked using the {@link Callback} annotation can
          * be invoked from computers that can see the component.
          *
          * @param name       the name of the component.
          * @param visibility the visibility of the component.
          * @return a builder for a node that is also a component.
-         * @see li.cil.oc.api.network.Component
+         * @see Component
          */
         ComponentBuilder withComponent(String name, Visibility visibility);
 
@@ -49,7 +51,7 @@ public interface Builder<T extends Node> {
          *
          * @param name the name of the component.
          * @return a builder for a node that is also a component.
-         * @see li.cil.oc.api.network.Component
+         * @see Component
          */
         ComponentBuilder withComponent(String name);
 
@@ -63,7 +65,7 @@ public interface Builder<T extends Node> {
          *
          * @param bufferSize the size of the local energy buffer.
          * @return a builder for a node that is also a connector.
-         * @see li.cil.oc.api.network.Connector
+         * @see Connector
          */
         ConnectorBuilder withConnector(double bufferSize);
 
@@ -74,7 +76,7 @@ public interface Builder<T extends Node> {
          * of zero.
          *
          * @return a builder for a node that is also a connector.
-         * @see li.cil.oc.api.network.Connector
+         * @see Connector
          */
         ConnectorBuilder withConnector();
     }
@@ -94,7 +96,7 @@ public interface Builder<T extends Node> {
          *
          * @param bufferSize the size of the local energy buffer.
          * @return a builder for a node that is also a connector.
-         * @see li.cil.oc.api.network.Connector
+         * @see Connector
          */
         ComponentConnectorBuilder withConnector(double bufferSize);
 
@@ -105,7 +107,7 @@ public interface Builder<T extends Node> {
          * of zero.
          *
          * @return a builder for a node that is also a connector.
-         * @see li.cil.oc.api.network.Connector
+         * @see Connector
          */
         ComponentConnectorBuilder withConnector();
     }
@@ -119,13 +121,13 @@ public interface Builder<T extends Node> {
          * Makes the node a component.
          * <p/>
          * Nodes that are components can be accessed from computers, methods
-         * declared in them marked using the {@link li.cil.oc.api.machine.Callback} annotation can
+         * declared in them marked using the {@link Callback} annotation can
          * be invoked from computers that can see the component.
          *
          * @param name       the name of the component.
          * @param visibility the visibility of the component.
          * @return a builder for a node that is also a component.
-         * @see li.cil.oc.api.network.Component
+         * @see Component
          */
         ComponentConnectorBuilder withComponent(String name, Visibility visibility);
 
@@ -137,7 +139,7 @@ public interface Builder<T extends Node> {
          *
          * @param name the name of the component.
          * @return a builder for a node that is also a component.
-         * @see li.cil.oc.api.network.Component
+         * @see Component
          */
         ComponentConnectorBuilder withComponent(String name);
     }

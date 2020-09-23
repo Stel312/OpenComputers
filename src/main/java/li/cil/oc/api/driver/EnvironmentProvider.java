@@ -1,5 +1,7 @@
 package li.cil.oc.api.driver;
 
+import li.cil.oc.api.network.Environment;
+import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -14,9 +16,9 @@ public interface EnvironmentProvider {
      * Get the environment provided by the specified stack.
      * <p/>
      * For blocks this will usually be the tile entity. In particular, for
-     * {@link li.cil.oc.api.network.SimpleComponent}s this allows returning
+     * {@link SimpleComponent}s this allows returning
      * an arbitrary class type instead of an environment type, since the
-     * {@link li.cil.oc.api.network.Environment} interface will be injected
+     * {@link Environment} interface will be injected
      * by the class transformer at runtime.
      * <p/>
      * For items this will be the type of the environment returned by the

@@ -1,10 +1,8 @@
 package li.cil.oc.api.driver.item;
 
-import li.cil.oc.api.event.RobotRenderEvent;
 import li.cil.oc.api.internal.Robot;
+import li.cil.oc.api.event.RobotRenderEvent;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Set;
 

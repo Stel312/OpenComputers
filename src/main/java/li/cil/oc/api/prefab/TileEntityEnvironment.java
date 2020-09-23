@@ -1,17 +1,20 @@
 package li.cil.oc.api.prefab;
 
+import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 
 /**
- * TileEntities can implement the {@link li.cil.oc.api.network.Environment}
+ * TileEntities can implement the {@link Environment}
  * interface to allow them to interact with the component network, by providing
- * a {@link li.cil.oc.api.network.Node} and connecting it to said network.
+ * a {@link Node} and connecting it to said network.
  * <p/>
  * Nodes in such a network can communicate with each other, or just use the
  * network as an index structure to find other nodes connected to them.
@@ -25,14 +28,14 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
      * this tile entity.
      * <p/>
      * You must only create new nodes using the factory method in the network
-     * API, {@link li.cil.oc.api.Network#newNode(Environment, Visibility)}.
+     * API, {@link Network#newNode(Environment, Visibility)}.
      * <p/>
      * For example:
      * <pre>
      * // The first parameters to newNode is the host() of the node, which will
      * // usually be this tile entity. The second one is it's reachability,
      * // which determines how other nodes in the same network can query this
-     * // node. See {@link li.cil.oc.api.network.Network#nodes(li.cil.oc.api.network.Node)}.
+     * // node. See {@link li.cil.oc.api.network.Network#nodes(Node)}.
      * node = Network.newNode(this, Visibility.Network)
      *       // This call allows the node to consume energy from the
      *       // component network it is in and act as a consumer, or to
@@ -40,7 +43,7 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
      *       // If you do not need energy remove this call.
      *       .withConnector()
      *       // This call marks the tile entity as a component. This means you
-     *       // can mark methods in it using the {@link li.cil.oc.api.machine.Callback}
+     *       // can mark methods in it using the {@link Callback}
      *       // annotation, making them callable from user code. The first
      *       // parameter is the name by which the component will be known in
      *       // the computer, in this case it could be accessed as
@@ -56,6 +59,10 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
      * </pre>
      */
     protected Node node;
+
+    public TileEntityEnvironment(TileEntityType<?> tileEntityTypeIn) {
+        super(tileEntityTypeIn);
+    }
 
     // ----------------------------------------------------------------------- //
 
@@ -100,16 +107,16 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
     }
 
     @Override
-    public void onChunkUnload() {
-        super.onChunkUnload();
+    public void onChunkUnloaded() {
+        super.onChunkUnloaded();
         // Make sure to remove the node from its network when its environment,
         // meaning this tile entity, gets unloaded.
         if (node != null) node.remove();
     }
 
     @Override
-    public void invalidate() {
-        super.invalidate();
+    protected void invalidateCaps() {
+        super.invalidateCaps();
         // Make sure to remove the node from its network when its environment,
         // meaning this tile entity, gets unloaded.
         if (node != null) node.remove();
@@ -117,9 +124,11 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
 
     // ----------------------------------------------------------------------- //
 
+
     @Override
-    public void readFromNBT(final NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
+    public void read(BlockState state, CompoundNBT nbt) {
+        super.read(state, nbt);
+
         // The host check may be superfluous for you. It's just there to allow
         // some special cases, where getNode() returns some node managed by
         // some other instance (for example when you have multiple internal
@@ -129,19 +138,21 @@ public abstract class TileEntityEnvironment extends TileEntity implements Enviro
             // to continue working without interruption across loads. If the
             // node is a power connector this is also required to restore the
             // internal energy buffer of the node.
-            node.load(nbt.getCompoundTag(TAG_NODE));
+            node.load(nbt.getCompound(TAG_NODE));
         }
     }
 
     @Override
-    public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
+    public CompoundNBT write(CompoundNBT compound) {
+        super.write(compound);
+
         // See readFromNBT() regarding host check.
         if (node != null && node.host() == this) {
-            final NBTTagCompound nodeNbt = new NBTTagCompound();
+            final CompoundNBT nodeNbt = new CompoundNBT();
             node.save(nodeNbt);
-            nbt.setTag(TAG_NODE, nodeNbt);
+            compound.put(TAG_NODE, nodeNbt);
         }
-        return nbt;
+
+        return compound;
     }
 }

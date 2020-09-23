@@ -1,8 +1,10 @@
 package li.cil.oc.api.driver;
 
+import li.cil.oc.api.driver.item.Slot;
+import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.ManagedEnvironment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 /**
  * Interface for item component drivers.
@@ -62,7 +64,7 @@ public interface DriverItem {
      * @param host  the host the environment will be managed by.
      * @return the environment for that item.
      */
-    ManagedEnvironment createEnvironment(ItemStack stack, li.cil.oc.api.network.EnvironmentHost host);
+    ManagedEnvironment createEnvironment(ItemStack stack, EnvironmentHost host);
 
     /**
      * The slot type of the specified item this driver supports.
@@ -73,7 +75,7 @@ public interface DriverItem {
      *
      * @param stack the item stack to get the slot type for.
      * @return the slot type of the specified item.
-     * @see li.cil.oc.api.driver.item.Slot
+     * @see Slot
      */
     String slot(ItemStack stack);
 
@@ -110,5 +112,5 @@ public interface DriverItem {
      * @return the tag to use for saving and loading, or <tt>null</tt> to use
      * the default tag <tt>oc:data</tt>.
      */
-    NBTTagCompound dataTag(ItemStack stack);
+    CompoundNBT dataTag(ItemStack stack);
 }

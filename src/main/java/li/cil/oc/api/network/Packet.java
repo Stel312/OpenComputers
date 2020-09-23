@@ -1,6 +1,7 @@
 package li.cil.oc.api.network;
 
-import net.minecraft.nbt.NBTTagCompound;
+import li.cil.oc.api.Network;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * These packets represent messages sent using a network card or wireless
@@ -9,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * These will be sent as the payload of <tt>network.message</tt> messages.
  * <p/>
  * <em>Important</em>: do <em>not</em> implement this interface. Use the factory
- * methods in {@link li.cil.oc.api.Network} instead.
+ * methods in {@link Network} instead.
  */
 public interface Packet {
     /**
@@ -63,7 +64,7 @@ public interface Packet {
      * Saves the packet's data to the specified compound tag.
      * <p/>
      * Restore a packet saved like this using the factory method in the
-     * {@link li.cil.oc.api.Network} class.
+     * {@link Network} class.
      */
-    void save(NBTTagCompound nbt);
+    void save(PlayerEntity nbt);
 }

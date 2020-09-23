@@ -1,7 +1,8 @@
 package li.cil.oc.api;
 
-import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.fs.Label;
+import li.cil.oc.api.network.Component;
+import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.ManagedEnvironment;
 
 /**
@@ -13,11 +14,11 @@ import li.cil.oc.api.network.ManagedEnvironment;
  * <tt>filesystem</tt> components in the component network. Note that the
  * component's visibility is set to <tt>Neighbors</tt> per default. If you wish
  * to change the file system's visibility (e.g. like the disk drive does) you
- * must cast the environment's node to {@link li.cil.oc.api.network.Component}
+ * must cast the environment's node to {@link Component}
  * and set the visibility to the desired value.
  * <p/>
  * Note that these methods should <em>not</em> be called in the pre-init phase,
- * since the {@link li.cil.oc.api.API#fileSystem} may not have been initialized
+ * since the {@link API#fileSystem} may not have been initialized
  * at that time. Only start calling these methods in the init phase or later.
  */
 public final class FileSystem {
