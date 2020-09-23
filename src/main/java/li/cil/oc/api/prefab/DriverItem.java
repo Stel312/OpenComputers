@@ -1,6 +1,5 @@
 package li.cil.oc.api.prefab;
 
-import com.webmilio.opencompooter.api.internal.*;
 import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.internal.*;

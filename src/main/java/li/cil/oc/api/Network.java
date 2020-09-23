@@ -1,7 +1,6 @@
 package li.cil.oc.api;
 
 import li.cil.oc.api.detail.Builder;
-import com.webmilio.opencompooter.api.network.*;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Packet;

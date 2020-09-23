@@ -1,7 +1,6 @@
 package li.cil.oc.api.prefab;
 
 import li.cil.oc.api.machine.Callback;
-import com.webmilio.opencompooter.api.network.*;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.SidedEnvironment;
