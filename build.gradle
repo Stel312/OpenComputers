@@ -20,6 +20,7 @@ plugins {
     id "com.matthewprenger.cursegradle" version "1.0.9"
 }
 
+apply plugin: 'scala'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'maven-publish'
 apply plugin: 'maven'
